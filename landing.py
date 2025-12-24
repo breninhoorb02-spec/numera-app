@@ -52,3 +52,4 @@ def show_landing():
     </button>
     </a>
     """, unsafe_allow_html=True)
+show_landing()

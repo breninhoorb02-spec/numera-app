@@ -1,19 +1,54 @@
 import streamlit as st
-from landing import show_landing
-from dashboard import show_dashboard
 
-st.set_page_config(page_title="Numera", layout="centered")
+def show_landing():
+    st.markdown("## 🚀 NUMERA")
+    st.markdown("### Conciliação bancária automática com IA")
 
-if "plano_ativo" not in st.session_state:
-    st.session_state["plano_ativo"] = False
+    st.markdown("""
+    A **Numera** transforma extratos bancários (PDF)  
+    em **lançamentos contábeis automáticos**, em minutos.
+    """)
 
-st.sidebar.title("NUMERA")
+    st.markdown("---")
 
-if st.sidebar.button("Simular plano ativo"):
-    st.session_state["plano_ativo"] = True
-    st.experimental_rerun()
+    st.markdown("### ❌ O problema")
+    st.markdown("""
+    Conciliação manual consome horas, gera erros  
+    e impede o crescimento do escritório.
+    """)
 
-if not st.session_state["plano_ativo"]:
-    show_landing()
-else:
-    show_dashboard()
+    st.markdown("### ✅ A solução")
+    st.markdown("""
+    ✔️ Upload de extrato PDF  
+    ✔️ Classificação automática por IA  
+    ✔️ Relatórios prontos  
+    ✔️ Economia de tempo real  
+    """)
+
+    st.markdown("---")
+
+    st.markdown("### 💰 Planos")
+    st.markdown("""
+    **Starter – R$ 49/mês**  
+    **Profissional – R$ 99/mês**  
+    **Escritórios – R$ 199/mês**
+    """)
+
+    st.markdown("---")
+
+    st.success("🎁 Teste grátis por 7 dias")
+
+    st.markdown("""
+    <a href="https://www.mercadopago.com.br/subscriptions/checkout?preapproval_plan_id=9fe152004c534b43ae63965e3a37feaf"
+    target="_blank">
+    <button style="
+        padding:15px;
+        font-size:18px;
+        background-color:#2563eb;
+        color:white;
+        border:none;
+        border-radius:6px;">
+        👉 Assinar agora
+    </button>
+    </a>
+    """, unsafe_allow_html=True)

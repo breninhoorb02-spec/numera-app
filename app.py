@@ -1,9 +1,15 @@
 import streamlit as st
 from auth import login
 from landing import show_landing
-from planos import verificar_plano, mostrar_upgrade
-from parser_generico import extrair_pdf_generico
+from planos import verificar_plano, mostrar_upgrade, pode_usar, registrar_uso
+
 from parser_nubank import extrair_nubank
+from parser_generico import extrair_pdf_generico
+from parser_bb import extrair_bb
+from parser_bradesco import extrair_bradesco
+from parser_caixa import extrair_caixa
+
+from classificador import classificar
 
 st.set_page_config(
     page_title="NUMERA • Inteligência Financeira",
@@ -14,7 +20,6 @@ st.set_page_config(
 if not login():
     st.stop()
 
-# 📌 MENU LATERAL
 menu = st.sidebar.radio(
     "Menu",
     ["Início", "Conciliação Bancária", "Planos"]
@@ -27,22 +32,23 @@ if menu == "Início":
 # 💳 PLANOS
 elif menu == "Planos":
     plano = verificar_plano()
-    st.subheader("💳 Seu plano")
     st.info(f"Plano atual: {plano}")
 
 # 🏦 CONCILIAÇÃO
 elif menu == "Conciliação Bancária":
 
-    plano = verificar_plano()
+    if verificar_plano() == "free":
+        mostrar_upgrade()
+        st.stop()
 
-    if plano == "free":
+    if not pode_usar():
         mostrar_upgrade()
         st.stop()
 
     st.subheader("🏦 Conciliação Bancária por PDF")
 
     banco = st.selectbox(
-        "Selecione o banco",
+        "Banco",
         [
             "Nubank",
             "Banco do Brasil",
@@ -62,23 +68,34 @@ elif menu == "Conciliação Bancária":
             try:
                 if banco == "Nubank":
                     df = extrair_nubank(arquivo)
+                elif banco == "Banco do Brasil":
+                    df = extrair_bb(arquivo)
+                elif banco == "Bradesco":
+                    df = extrair_bradesco(arquivo)
+                elif banco == "Caixa Econômica":
+                    df = extrair_caixa(arquivo)
                 else:
                     df = extrair_pdf_generico(arquivo)
 
                 if df.empty:
-                    st.warning("Nenhuma movimentação encontrada no PDF.")
+                    st.warning("Nenhuma movimentação encontrada.")
                 else:
-                    st.success("✅ Conciliação realizada com sucesso")
+                    # 🔥 CLASSIFICAÇÃO CONTÁBIL
+                    df["Categoria"] = df.apply(
+                        lambda x: classificar(x["Descrição"], x["Valor"]),
+                        axis=1
+                    )
+
+                    registrar_uso()
+
+                    st.success("✅ Conciliação e classificação concluídas")
                     st.dataframe(df)
 
-                    st.download_button()
-                        "⬇️ Baixar lançamentos (CSV)",
+                    st.download_button(
+                        "⬇️ Baixar CSV classificado",
                         df.to_csv(index=False),
-                        file_name="lancamentos_numera.csv",
+                        file_name="numera_lancamentos_classificados.csv",
                         mime="text/csv"
-                        df["Categoria"] = df.apply(
-    lambda x: classificar(x["Descrição"], x["Valor"]), axis=1
-                    
                     )
 
             except Exception as e:

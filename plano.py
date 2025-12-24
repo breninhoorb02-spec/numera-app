@@ -1,9 +1,7 @@
 import streamlit as st
 
 LIMITES = {
-    "free": 1,
-    "starter": 10,
-    "pro": 50
+    "free": 1  # usuário free pode subir apenas 1 PDF
 }
 
 def verificar_plano():
@@ -23,8 +21,4 @@ def registrar_uso():
     st.session_state.usos += 1
 
 def mostrar_upgrade():
-    st.warning("🚫 Limite do plano atingido")
-    st.markdown("""
-    👉 Faça upgrade para continuar usando a Numera  
-    Acesse a aba **Início** e escolha seu plano.
-    """)
+    st.info("🚀 Você está usando a versão FREE de teste. Faça upgrade para liberar mais PDFs.")

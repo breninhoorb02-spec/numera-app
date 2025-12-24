@@ -1,55 +1,23 @@
 import streamlit as st
 
 def show_landing():
-    st.markdown("## 🚀 NUMERA")
-    st.markdown("### Conciliação bancária automática com IA")
+    st.title("🚀 NUMERA")
+    st.subheader("Conciliação bancária automática com IA")
 
     st.markdown("""
-    A **Numera** transforma extratos bancários (PDF)
-    em lançamentos contábeis automáticos, em minutos.
+    Transforme **PDFs bancários** em lançamentos contábeis automáticos.
+    Economize horas e escale seu escritório.
     """)
-
-    st.markdown("---")
-
-    st.markdown("### ❌ O problema")
-    st.markdown("""
-    Conciliação manual consome horas,
-    gera erros e trava o crescimento.
-    """)
-
-    st.markdown("### ✅ A solução")
-    st.markdown("""
-    ✔️ Upload de extrato em PDF  
-    ✔️ Classificação automática  
-    ✔️ Relatórios prontos  
-    ✔️ Economia de tempo real  
-    """)
-
-    st.markdown("---")
 
     st.markdown("### 💰 Planos")
     st.markdown("""
-    **Starter – R$ 49/mês**  
-    **Profissional – R$ 99/mês**  
-    **Escritórios – R$ 199/mês**
+    • Starter – R$ 49/mês  
+    • Profissional – R$ 99/mês  
+    • Escritórios – R$ 199/mês
     """)
 
-    st.markdown("---")
-
-    st.success("🎁 Teste grátis por 7 dias")
-
     st.markdown("""
-    <a href="https://www.mercadopago.com.br"
-    target="_blank">
-    <button style="
-        padding:15px;
-        font-size:18px;
-        background-color:#2563eb;
-        color:white;
-        border:none;
-        border-radius:6px;">
-        👉 Assinar agora
-    </button>
+    <a href="SEU_LINK_DE_PAGAMENTO_AQUI" target="_blank">
+    <button style="padding:15px;font-size:18px;">Assinar agora</button>
     </a>
     """, unsafe_allow_html=True)
-show_landing()

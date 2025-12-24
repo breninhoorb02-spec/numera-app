@@ -24,4 +24,7 @@ def registrar_uso():
 
 def mostrar_upgrade():
     st.warning("🚫 Limite do plano atingido")
-    st.markdown("👉 Faça upgrade para continuar")
+    st.markdown("""
+    👉 Faça upgrade para continuar usando a Numera  
+    Acesse a aba **Início** e escolha seu plano.
+    """)

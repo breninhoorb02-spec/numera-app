@@ -1,3 +1,9 @@
+login()
+from auth import login
+from plano import verificar_limite
+from parser_generico import extrair_generico
+from parser_nubank import extrair_nubank
+import pdfplumber
 import streamlit as st
 
 def show_landing():
@@ -16,7 +22,22 @@ def show_landing():
     Conciliação manual consome horas, gera erros  
     e impede o crescimento do escritório.
     """)
+pdf_file = st.file_uploader("Envie o extrato bancário (PDF)", type=["pdf"])
 
+if pdf_file:
+    verificar_limite()
+
+    with pdfplumber.open(pdf_file) as pdf:
+        texto = ""
+        for page in pdf.pages:
+            texto += page.extract_text() or ""
+
+    if "nubank" in texto.lower():
+        df = extrair_nubank(texto)
+    else:
+        df = extrair_generico(texto)
+
+    st.dataframe(df)
     st.markdown("### ✅ A solução")
     st.markdown("""
     ✔️ Upload de extrato PDF  

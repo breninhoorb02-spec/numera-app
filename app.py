@@ -1,4 +1,5 @@
 import streamlit as st
+import requests
 from auth import login
 from landing import show_landing
 from planos import verificar_plano, mostrar_upgrade, pode_usar, registrar_uso
@@ -22,7 +23,7 @@ if not login():
 
 menu = st.sidebar.radio(
     "Menu",
-    ["Início", "Conciliação Bancária", "Planos"]
+    ["Início", "Conciliação Bancária", "Open Finance", "Planos"]
 )
 
 # 🏠 INÍCIO
@@ -34,7 +35,7 @@ elif menu == "Planos":
     plano = verificar_plano()
     st.info(f"Plano atual: {plano}")
 
-# 🏦 CONCILIAÇÃO
+# 🏦 CONCILIAÇÃO PDF
 elif menu == "Conciliação Bancária":
 
     if verificar_plano() == "free":
@@ -99,5 +100,40 @@ elif menu == "Conciliação Bancária":
                     )
 
             except Exception as e:
-                st.error("❌ Erro ao processar o extrato")
+                st.error("❌ Erro ao processar o PDF")
                 st.exception(e)
+
+# 🌐 OPEN FINANCE (FastAPI)
+elif menu == "Open Finance":
+    st.subheader("🔗 Conectar Open Finance")
+    st.markdown("""
+        Conecte sua conta bancária através do backend seguro da NUMERA.
+        Todas as movimentações serão processadas automaticamente.
+    """)
+
+    # Inserir CPF/CNPJ do cliente
+    cpf_cnpj = st.text_input("CPF ou CNPJ do cliente")
+
+    if st.button("Buscar extrato do cliente"):
+        if not cpf_cnpj:
+            st.warning("Informe o CPF/CNPJ")
+        else:
+            with st.spinner("🔄 Buscando extrato..."):
+                try:
+                    # Substitua pelo URL do seu backend FastAPI
+                    backend_url = "https://seu-backend.herokuapp.com/extrato"
+
+                    # Exemplo payload (você ajusta conforme backend)
+                    payload = {"cpf_cnpj": cpf_cnpj}
+                    resp = requests.post(backend_url, json=payload, timeout=30)
+
+                    if resp.status_code == 200:
+                        st.success("✅ Extrato recebido")
+                        st.json(resp.json())
+                    else:
+                        st.error("❌ Erro ao buscar extrato")
+                        st.text(resp.text)
+
+                except Exception as e:
+                    st.error("❌ Erro de conexão com o backend")
+                    st.exception(e)

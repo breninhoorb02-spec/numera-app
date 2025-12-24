@@ -1,29 +1,25 @@
-import re
+import pdfplumber
 import pandas as pd
+import re
 
-def extrair_generico(texto):
-    linhas = texto.split("\n")
-    registros = []
+def extrair_pdf_generico(file):
+    dados = []
 
-    for linha in linhas:
-        valor = re.findall(r"-?\d{1,3}(?:\.\d{3})*,\d{2}", linha)
-        data = re.findall(r"\d{2}/\d{2}/\d{4}", linha)
+    with pdfplumber.open(file) as pdf:
+        for page in pdf.pages:
+            texto = page.extract_text()
+            if not texto:
+                continue
 
-        if valor:
-            registros.append({
-                "Data": data[0] if data else "",
-                "Descrição": linha,
-                "Valor": valor[0]
-            })
+            for linha in texto.split("\n"):
+                match = re.search(r'(\d{2}/\d{2}/\d{4}).+?([\d,]+\.\d{2})', linha)
+                if match:
+                    data = match.group(1)
+                    valor = match.group(2).replace(",", "")
+                    dados.append({
+                        "Data": data,
+                        "Descrição": linha,
+                        "Valor": float(valor)
+                    })
 
-    df = pd.DataFrame(registros)
-
-    if not df.empty:
-        df["Valor"] = (
-            df["Valor"]
-            .str.replace(".", "", regex=False)
-            .str.replace(",", ".", regex=False)
-            .astype(float)
-        )
-
-    return df
+    return pd.DataFrame(dados)

@@ -1,4 +1,4 @@
-login()
+
 from auth import login
 from plano import verificar_limite
 from parser_generico import extrair_generico

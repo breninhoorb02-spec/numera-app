@@ -1,3 +1,6 @@
 streamlit
 pandas
-openpyxl
+pdfplumber
+pillow
+fpdf
+openai

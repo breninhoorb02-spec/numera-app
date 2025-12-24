@@ -71,11 +71,14 @@ elif menu == "Conciliação Bancária":
                     st.success("✅ Conciliação realizada com sucesso")
                     st.dataframe(df)
 
-                    st.download_button(
+                    st.download_button()
                         "⬇️ Baixar lançamentos (CSV)",
                         df.to_csv(index=False),
                         file_name="lancamentos_numera.csv",
                         mime="text/csv"
+                        df["Categoria"] = df.apply(
+    lambda x: classificar(x["Descrição"], x["Valor"]), axis=1
+                    
                     )
 
             except Exception as e:

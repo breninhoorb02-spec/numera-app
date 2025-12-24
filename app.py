@@ -1,5 +1,22 @@
 import streamlit as st
+st.set_page_config(
+    page_title="NUMERA FREE • Teste",
+    layout="centered",
+    initial_sidebar_state="expanded"
+)
 
+# Forçar tema claro
+st.markdown(
+    """
+    <style>
+    .main {
+        background-color: #ffffff;
+        color: #000000;
+    }
+    </style>
+    """,
+    unsafe_allow_html=True
+)
 LIMITES = {
     "free": 1,
     "starter": 10,

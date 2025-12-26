@@ -2,7 +2,6 @@ import streamlit as st
 import requests
 from auth import login
 from landing import show_landing
-from planos import verificar_plano, mostrar_upgrade, pode_usar, registrar_uso
 
 from parser_nubank import extrair_nubank
 from parser_generico import extrair_pdf_generico

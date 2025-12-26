@@ -1,24 +1,54 @@
 import streamlit as st
 
-LIMITES = {
-    "free": 1  # usuário free pode subir apenas 1 PDF
-}
+def show_landing():
+    st.markdown("## 🚀 NUMERA")
+    st.markdown("### Conciliação bancária automática com IA")
 
-def verificar_plano():
-    if "plano" not in st.session_state:
-        st.session_state.plano = "free"
+    st.markdown("""
+    A **Numera** transforma extratos bancários (PDF)  
+    em **lançamentos contábeis automáticos**, em minutos.
+    """)
 
-    if "usos" not in st.session_state:
-        st.session_state.usos = 0
+    st.markdown("---")
 
-    return st.session_state.plano
+    st.markdown("### ❌ O problema")
+    st.markdown("""
+    Conciliação manual consome horas, gera erros  
+    e impede o crescimento do escritório.
+    """)
 
-def pode_usar():
-    plano = verificar_plano()
-    return st.session_state.usos < LIMITES[plano]
+    st.markdown("### ✅ A solução")
+    st.markdown("""
+    ✔️ Upload de extrato PDF  
+    ✔️ Classificação automática por IA  
+    ✔️ Relatórios prontos  
+    ✔️ Economia de tempo real  
+    """)
 
-def registrar_uso():
-    st.session_state.usos += 1
+    st.markdown("---")
 
-def mostrar_upgrade():
-    st.info("🚀 Você está usando a versão FREE de teste. Faça upgrade para liberar mais PDFs.")
+    st.markdown("### 💰 Planos")
+    st.markdown("""
+    **Starter – R$ 49/mês**  
+    **Profissional – R$ 99/mês**  
+    **Escritórios – R$ 199/mês**
+    """)
+
+    st.markdown("---")
+
+    st.success("🎁 Teste grátis por 7 dias")
+
+    st.markdown("""
+    <a href="https://www.mercadopago.com.br/subscriptions/checkout?preapproval_plan_id=9fe152004c534b43ae63965e3a37feaf"
+    target="_blank">
+    <button style="
+        padding:15px;
+        font-size:18px;
+        background-color:#2563eb;
+        color:white;
+        border:none;
+        border-radius:6px;">
+        👉 Assinar agora
+    </button>
+    </a>
+    """, unsafe_allow_html=True)
